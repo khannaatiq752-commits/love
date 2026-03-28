@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>💌 Naatiq & Saika</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Dancing+Script:wght@400;600;700&family=Architects+Daughter&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --rose:#ff4d6d;--deep-rose:#c9184a;--blush:#ffb3c1;--gold:#ffd700;
+  --dark:#0d0510;--card:#1a0d1a;--petal:#ff85a1;--cream:#fff0f3;
+  --purple:#7b2d8b;--soft:#fce4ec;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--dark);font-family:'Caveat',cursive;color:white;}
+
+/* ========== LOADING SCREEN ========== */
+#loading{
+  position:fixed;inset:0;z-index:999;
+  background:var(--dark);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  transition:opacity 0.8s ease;
+}
+.load-heart{font-size:70px;animation:load-beat 0.8s ease-in-out infinite;}
+@keyframes load-beat{0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
+.load-text{font-family:'Dancing Script',cursive;font-size:22px;color:var(--blush);
+  animation:fade-blink 1.5s ease-in-out infinite;}
+@keyframes fade-blink{0%,100%{opacity:0.4;}50%{opacity:1;}}
+
+/* ========== PARTICLE CANVAS ========== */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;}
+
+/* ========== MAIN SCROLLER ========== */
+#app{
+  position:fixed;inset:0;overflow-y:scroll;-webkit-overflow-scrolling:touch;
+  scroll-snap-type:y mandatory;z-index:1;
+  opacity:0;transition:opacity 1s ease;
+}
+#app.show{opacity:1;}
+
+/* ========== EACH SECTION = FULL SCREEN ========== */
+.scene{
+  min-height:100vh;width:100%;
+  scroll-snap-align:start;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:30px 22px;position:relative;overflow:hidden;
+}
+
+/* ========== SCENE 1: HERO ========== */
+#scene-hero{
+  background:radial-gradient(ellipse at 50% 30%,#3d0030 0%,#1a0520 50%,#0d0510 100%);
+}
+.hero-names{
+  font-family:'Permanent Marker',cursive;
+  font-size:clamp(36px,9vw,58px);text-align:center;line-height:1.2;
+  background:linear-gradient(135deg,#ffd700 0%,#ff85a1 50%,#ffd700 100%);
+  background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;animation:shimmer 4s ease-in-out infinite;
+}
+@keyframes shimmer{0%,100%{background-position:0%;}50%{background-position:100%;}}
+.hero-heart{font-size:clamp(55px,14vw,90px);display:block;margin:16px 0;
+  animation:hero-beat 1.4s ease-in-out infinite;}
+@keyframes hero-beat{
+  0%,100%{transform:scale(1);filter:drop-shadow(0 0 15px rgba(255,77,109,0.5));}
+  14%{transform:scale(1.18);filter:drop-shadow(0 0 35px rgba(255,77,109,0.9));}
+  28%{transform:scale(1.05);}
+  42%{transform:scale(1.12);}
+}
+.hero-tagline{font-family:'Dancing Script',cursive;font-size:20px;color:var(--blush);
+  text-align:center;margin-top:8px;opacity:0.85;}
+.hero-nick{
+  margin-top:22px;
+  background:rgba(255,77,109,0.12);border:1px solid rgba(255,77,109,0.3);
+  border-radius:50px;padding:10px 26px;
+  font-family:'Dancing Script',cursive;font-size:18px;color:var(--petal);
+  animation:pulse-border 2s ease-in-out infinite;
+}
+@keyframes pulse-border{
+  0%,100%{border-color:rgba(255,77,109,0.3);box-shadow:none;}
+  50%{border-color:rgba(255,77,109,0.7);box-shadow:0 0 20px rgba(255,77,109,0.3);}
+}
+.handmade-stamp{
+  margin-top:14px;
+  font-family:'Permanent Marker',cursive;
+  font-size:13px;
+  color:rgba(255,215,0,0.55);
+  letter-spacing:3px;
+  text-transform:uppercase;
+  border:1px dashed rgba(255,215,0,0.25);
+  padding:6px 18px;
+  border-radius:4px;
+  transform:rotate(-2deg);
+  display:inline-block;
+}
+.scroll-hint{
+  position:absolute;bottom:30px;
+  font-size:13px;color:rgba(255,179,193,0.5);
+  font-family:'Dancing Script',cursive;
+  animation:bounce-hint 2s ease-in-out infinite;
+}
+@keyframes bounce-hint{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+
+/* ========== SCENE 2: LOVE LETTER ========== */
+#scene-letter{
+  background:linear-gradient(160deg,#1a0520 0%,#0d0510 100%);
+}
+.letter-paper{
+  background:rgba(255,77,109,0.06);
+  border:1px solid rgba(255,77,109,0.2);
+  border-radius:20px;padding:30px 24px;
+  position:relative;max-width:380px;width:100%;
+  backdrop-filter:blur(8px);
+}
+.letter-paper::before{
+  content:'💌';position:absolute;top:-20px;left:50%;transform:translateX(-50%);
+  font-size:36px;
+}
+.letter-to{font-family:'Dancing Script',cursive;font-size:20px;color:var(--gold);margin-bottom:16px;}
+.letter-body{font-family:'Caveat',cursive;font-size:19px;line-height:2;color:rgba(255,255,255,0.88);}
+.letter-body span{color:var(--petal);font-style:normal;font-weight:600;}
+.letter-from{text-align:right;margin-top:20px;font-family:'Dancing Script',cursive;
+  font-size:19px;color:var(--gold);}
+
+/* ========== SCENE 3: SPIN THE BOTTLE GAME ========== */
+#scene-spin{background:radial-gradient(ellipse at 50% 50%,#200a30 0%,#0d0510 100%);}
+.game-title{font-family:'Permanent Marker',cursive;font-size:26px;
+  color:var(--gold);text-align:center;margin-bottom:6px;}
+.game-subtitle{font-family:'Dancing Script',cursive;font-size:16px;color:var(--blush);
+  text-align:center;margin-bottom:28px;opacity:0.8;}
+
+.bottle-wrap{
+  position:relative;width:200px;height:200px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  margin:0 auto 24px;
+}
+.bottle-ring{
+  position:absolute;inset:0;border-radius:50%;
+  border:2px dashed rgba(255,133,161,0.3);
+  animation:spin-ring 8s linear infinite;
+}
+@keyframes spin-ring{to{transform:rotate(360deg);}}
+.ring-dot{
+  position:absolute;width:8px;height:8px;background:var(--rose);border-radius:50%;
+  box-shadow:0 0 8px var(--rose);
+}
+.bottle-svg{font-size:70px;transition:transform 0.05s linear;display:block;user-select:none;}
+.spin-btn{
+  background:linear-gradient(135deg,var(--deep-rose),var(--rose));
+  color:white;border:none;padding:14px 40px;border-radius:50px;
+  font-family:'Dancing Script',cursive;font-size:22px;cursor:pointer;
+  box-shadow:0 6px 25px rgba(255,77,109,0.5);
+  transition:transform 0.2s,box-shadow 0.2s;display:block;margin:0 auto;
+}
+.spin-btn:active{transform:scale(0.95);}
+.dare-box{
+  margin-top:20px;max-width:340px;
+  background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.25);
+  border-radius:16px;padding:18px 20px;text-align:center;
+  opacity:0;transform:translateY(10px);transition:all 0.5s ease;
+}
+.dare-box.show{opacity:1;transform:translateY(0);}
+.dare-emoji{font-size:32px;display:block;margin-bottom:8px;}
+.dare-text{font-family:'Dancing Script',cursive;font-size:19px;color:var(--cream);line-height:1.5;}
+
+/* ========== SCENE 4: LOVE QUIZ ========== */
+#scene-quiz{background:linear-gradient(160deg,#0d1020 0%,#0d0510 100%);}
+.quiz-card{
+  max-width:380px;width:100%;
+  background:rgba(123,45,139,0.12);border:1px solid rgba(123,45,139,0.3);
+  border-radius:24px;padding:28px 22px;text-align:center;
+}
+.quiz-q{font-family:'Architects Daughter',cursive;font-size:20px;
+  color:white;margin-bottom:22px;line-height:1.5;}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.quiz-opt{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);
+  border-radius:14px;padding:14px 10px;cursor:pointer;
+  font-size:14px;color:rgba(255,255,255,0.85);
+  transition:all 0.25s ease;font-family:'Lora',serif;line-height:1.4;
+}
+.quiz-opt:active{transform:scale(0.96);}
+.quiz-opt.correct{background:rgba(0,200,100,0.2);border-color:rgba(0,200,100,0.5);color:#7fffb0;}
+.quiz-opt.wrong{background:rgba(255,77,109,0.2);border-color:rgba(255,77,109,0.5);color:#ff8fab;}
+.quiz-result{margin-top:18px;font-family:'Dancing Script',cursive;font-size:20px;
+  color:var(--gold);min-height:30px;}
+.quiz-progress{font-size:13px;color:rgba(255,179,193,0.6);margin-bottom:16px;
+  font-family:'Dancing Script',cursive;}
+.quiz-score-final{
+  text-align:center;padding:20px;
+  font-family:'Dancing Script',cursive;
+}
+.quiz-score-num{font-size:50px;color:var(--gold);display:block;}
+.quiz-score-msg{font-size:20px;color:var(--blush);margin-top:8px;}
+
+/* ========== SCENE 5: MEMORY SCRATCH ========== */
+#scene-scratch{background:radial-gradient(ellipse at 30% 70%,#200010 0%,#0d0510 100%);}
+.scratch-wrap{max-width:340px;width:100%;text-align:center;}
+.scratch-canvas-wrap{
+  position:relative;width:100%;height:180px;
+  border-radius:20px;overflow:hidden;margin:20px 0;cursor:crosshair;
+}
+.scratch-reveal{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#ff4d6d,#c9184a);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;
+  font-family:'Dancing Script',cursive;font-size:20px;color:white;
+  padding:20px;text-align:center;line-height:1.5;
+}
+.scratch-reveal .big-emoji{font-size:45px;display:block;}
+canvas#scratchCanvas{position:absolute;inset:0;border-radius:20px;}
+.scratch-hint{font-family:'Dancing Script',cursive;font-size:15px;
+  color:rgba(255,179,193,0.6);margin-top:8px;}
+.scratch-pct{font-size:13px;color:var(--gold);margin-top:6px;}
+
+/* ========== SCENE 6: LOVE METER ========== */
+#scene-meter{background:linear-gradient(160deg,#1a0010 0%,#0d0510 100%);}
+.meter-wrap{max-width:360px;width:100%;text-align:center;}
+.meter-names-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:28px;}
+.meter-name{
+  background:rgba(255,77,109,0.12);border:1px solid rgba(255,77,109,0.25);
+  border-radius:12px;padding:12px 18px;
+  font-family:'Dancing Script',cursive;font-size:18px;color:white;min-width:100px;
+}
+.meter-plus{font-size:22px;color:var(--gold);}
+.meter-bar-wrap{
+  height:50px;background:rgba(255,255,255,0.06);
+  border-radius:25px;overflow:hidden;position:relative;margin-bottom:16px;
+  border:1px solid rgba(255,77,109,0.2);
+}
+.meter-fill{
+  height:100%;border-radius:25px;
+  background:linear-gradient(90deg,#ff4d6d,#ffd700,#ff4d6d);
+  background-size:200%;
+  width:0%;transition:width 2.5s cubic-bezier(0.34,1.56,0.64,1);
+  animation:meter-shimmer 2s linear infinite;
+}
+@keyframes meter-shimmer{0%{background-position:0%;}100%{background-position:200%;}}
+.meter-pct{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Dancing Script',cursive;font-size:20px;font-weight:700;
+  color:white;text-shadow:0 1px 4px rgba(0,0,0,0.5);
+}
+.meter-result{font-family:'Permanent Marker',cursive;
+  font-size:22px;color:var(--gold);margin:12px 0;}
+.meter-msg{font-size:15px;color:var(--blush);line-height:1.7;}
+.calc-btn{
+  margin-top:20px;
+  background:linear-gradient(135deg,#7b2d8b,#c9184a);
+  color:white;border:none;padding:14px 36px;border-radius:50px;
+  font-family:'Dancing Script',cursive;font-size:21px;cursor:pointer;
+  box-shadow:0 6px 25px rgba(123,45,139,0.4);transition:transform 0.2s;
+}
+.calc-btn:active{transform:scale(0.96);}
+
+/* ========== SCENE 7: WISH LANTERN ========== */
+#scene-lantern{background:radial-gradient(ellipse at 50% 80%,#1a0d00 0%,#0d0510 100%);}
+.lantern-area{max-width:360px;width:100%;text-align:center;}
+.lantern-emoji{
+  font-size:80px;display:block;margin:0 auto 16px;
+  animation:lantern-float 3s ease-in-out infinite;cursor:pointer;
+}
+@keyframes lantern-float{
+  0%,100%{transform:translateY(0) rotate(-3deg);}
+  50%{transform:translateY(-18px) rotate(3deg);}
+}
+.lantern-msg{
+  font-family:'Caveat',cursive;font-size:19px;
+  color:rgba(255,255,255,0.85);line-height:1.9;
+  background:rgba(255,165,0,0.08);border:1px solid rgba(255,165,0,0.2);
+  border-radius:18px;padding:24px 20px;margin:16px 0;
+}
+.lantern-msg span{color:var(--gold);font-style:normal;}
+.release-btn{
+  background:linear-gradient(135deg,#ff9500,#ffd700);
+  color:#1a0a00;border:none;padding:14px 36px;border-radius:50px;
+  font-family:'Dancing Script',cursive;font-size:21px;cursor:pointer;font-weight:700;
+  box-shadow:0 6px 25px rgba(255,165,0,0.4);transition:transform 0.2s;
+}
+.release-btn:active{transform:scale(0.96);}
+.flying-lantern{
+  position:fixed;font-size:40px;pointer-events:none;z-index:999;
+  animation:fly-up 4s ease-in forwards;
+}
+@keyframes fly-up{
+  0%{opacity:1;transform:translate(0,0) scale(1);}
+  100%{opacity:0;transform:translate(var(--fx),var(--fy)) scale(0.3);}
+}
+
+/* ========== SCENE 8: REASONS CAROUSEL ========== */
+#scene-reasons{background:linear-gradient(160deg,#0a1520 0%,#0d0510 100%);}
+.carousel-wrap{max-width:360px;width:100%;position:relative;}
+.carousel-track{
+  display:flex;gap:16px;overflow-x:scroll;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;padding:10px 5px 20px;
+  scrollbar-width:none;
+}
+.carousel-track::-webkit-scrollbar{display:none;}
+.reason-slide{
+  flex:0 0 280px;scroll-snap-align:center;
+  background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.2);
+  border-radius:22px;padding:30px 22px;text-align:center;
+}
+.reason-num{font-family:'Dancing Script',cursive;font-size:13px;color:rgba(255,133,161,0.5);margin-bottom:6px;}
+.reason-big-emoji{font-size:48px;display:block;margin-bottom:14px;}
+.reason-slide-title{font-family:'Permanent Marker',cursive;
+  font-size:20px;color:var(--gold);margin-bottom:10px;}
+.reason-slide-text{font-size:15px;color:rgba(255,255,255,0.8);line-height:1.8;}
+.carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:4px;}
+.cdot{width:7px;height:7px;border-radius:50%;background:rgba(255,133,161,0.3);transition:all 0.3s;}
+.cdot.active{background:var(--rose);width:20px;border-radius:4px;}
+
+/* ========== SCENE 9: FINAL ========== */
+#scene-final{
+  background:radial-gradient(ellipse at 50% 40%,#3d0030 0%,#1a0520 50%,#0d0510 100%);
+}
+.final-wrap{text-align:center;max-width:360px;}
+.final-big{font-size:90px;display:block;animation:final-beat 1s ease-in-out infinite;}
+@keyframes final-beat{
+  0%,100%{transform:scale(1);filter:drop-shadow(0 0 20px rgba(255,77,109,0.6));}
+  50%{transform:scale(1.2);filter:drop-shadow(0 0 50px rgba(255,77,109,1));}
+}
+.final-quote{
+  font-family:'Architects Daughter',cursive;
+  font-size:clamp(20px,5vw,28px);
+  background:linear-gradient(135deg,#ffd700,#ff85a1,#ffd700);
+  background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;animation:shimmer 3s ease-in-out infinite;
+  line-height:1.4;margin:20px 0 10px;
+}
+.final-sign{font-family:'Dancing Script',cursive;font-size:22px;color:var(--blush);opacity:0.85;}
+.fireworks-btn{
+  margin-top:30px;width:100%;
+  background:linear-gradient(135deg,#c9184a,#ff4d6d,#ff85a1);
+  color:white;border:none;padding:18px;border-radius:50px;
+  font-family:'Dancing Script',cursive;font-size:24px;cursor:pointer;
+  box-shadow:0 10px 40px rgba(255,77,109,0.6);transition:transform 0.2s;
+}
+.fireworks-btn:active{transform:scale(0.97);}
+
+/* ========== CONFETTI ========== */
+.confetti-p{
+  position:fixed;pointer-events:none;z-index:9999;
+  border-radius:2px;animation:cfetti 3s ease-in forwards;
+}
+@keyframes cfetti{
+  0%{opacity:1;transform:translateY(-10px) rotate(0deg);}
+  100%{opacity:0;transform:translateY(100vh) rotate(720deg) translateX(var(--cx));}
+}
+
+/* ========== NAV DOTS ========== */
+.nav-dots{
+  position:fixed;right:14px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:8px;z-index:100;
+}
+.ndot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,133,161,0.3);cursor:pointer;transition:all 0.3s;
+}
+.ndot.active{background:var(--rose);height:20px;border-radius:4px;}
+
+/* ========== UTILS ========== */
+.section-label{
+  font-family:'Dancing Script',cursive;font-size:14px;
+  color:rgba(255,133,161,0.5);text-align:center;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase;
+}
+.section-heading{
+  font-family:'Permanent Marker',cursive;
+  font-size:clamp(22px,5.5vw,32px);color:var(--gold);text-align:center;margin-bottom:20px;
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading">
+  <span class="load-heart">💝</span>
+  <div class="load-text">Loading your surprise, Saika... 🌸</div>
+</div>
+
+<!-- PARTICLE CANVAS -->
+<canvas id="particles"></canvas>
+
+<!-- NAV DOTS -->
+<div class="nav-dots" id="navDots"></div>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- SCENE 1: HERO -->
+  <section class="scene" id="scene-hero">
+    <span class="hero-heart">❤️</span>
+    <div class="hero-names">Naatiq<br>&amp;<br>Saika</div>
+    <div class="hero-tagline">I made this with all my love, just for you 🖊️</div>
+    <div class="hero-nick">💕 My Babu Begum, Sukku Pukku 💕</div>
+    <div class="handmade-stamp">✦ made by me, with love ✦</div>
+    <div class="scroll-hint">✨ Scroll down for surprises ✨</div>
+  </section>
+
+  <!-- SCENE 2: LOVE LETTER -->
+  <section class="scene" id="scene-letter">
+    <div class="section-label">From my heart</div>
+    <div class="letter-paper">
+      <div class="letter-to">Dearest Saika,</div>
+      <div class="letter-body">
+        Before you came into my life, I never knew what it felt like to miss someone before they even leave.<br><br>
+        You are the reason I smile at my phone like an idiot. 😂💕<br><br>
+        My <span>Babu Begum</span> — you are not just my girlfriend. You are my favourite person, my safe place, my home.<br><br>
+        Every time I call you <span>Sukku Pukku</span>, I hope you know it carries every bit of love I have for you.<br><br>
+        I chose you. I keep choosing you. Every single day. 🌹
+      </div>
+      <div class="letter-from">Forever yours,<br>Your person 💌</div>
+    </div>
+  </section>
+
+  <!-- SCENE 3: SPIN THE DARE -->
+  <section class="scene" id="scene-spin">
+    <div class="game-title">💫 Spin the Heart</div>
+    <div class="game-subtitle">Spin it — I have a dare waiting for you! 😏</div>
+    <div class="bottle-wrap" id="bottleWrap">
+      <div class="bottle-ring">
+        <div class="ring-dot" style="top:0;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ring-dot" style="bottom:0;left:50%;transform:translate(-50%,50%)"></div>
+        <div class="ring-dot" style="left:0;top:50%;transform:translate(-50%,-50%)"></div>
+        <div class="ring-dot" style="right:0;top:50%;transform:translate(50%,-50%)"></div>
+      </div>
+      <span class="bottle-svg" id="bottleSvg">💘</span>
+    </div>
+    <button class="spin-btn" id="spinBtn" onclick="spinBottle()">Spin! 💫</button>
+    <div class="dare-box" id="dareBox">
+      <span class="dare-emoji" id="dareEmoji">🌹</span>
+      <div class="dare-text" id="dareText"></div>
+    </div>
+  </section>
+
+  <!-- SCENE 4: LOVE QUIZ -->
+  <section class="scene" id="scene-quiz">
+    <div class="section-label">How well do you know me? 😏</div>
+    <div class="quiz-card" id="quizCard">
+      <div class="quiz-progress" id="quizProg">Question 1 of 5</div>
+      <div class="quiz-q" id="quizQ">Loading...</div>
+      <div class="quiz-options" id="quizOpts"></div>
+      <div class="quiz-result" id="quizRes"></div>
+    </div>
+  </section>
+
+  <!-- SCENE 5: SCRATCH CARD -->
+  <section class="scene" id="scene-scratch">
+    <div class="section-label">A hidden message</div>
+    <div class="section-heading">Scratch to reveal 🤫</div>
+    <div class="scratch-wrap">
+      <div class="scratch-canvas-wrap" id="scratchWrap">
+        <div class="scratch-reveal" id="scratchReveal">
+          <span class="big-emoji">💍</span>
+          You are the most<br>precious thing<br>in my world,<br><b>Saika</b> 💕
+        </div>
+        <canvas id="scratchCanvas"></canvas>
+      </div>
+      <div class="scratch-hint">🖐 Scratch the silver with your finger</div>
+      <div class="scratch-pct" id="scratchPct">0% revealed</div>
+    </div>
+  </section>
+
+  <!-- SCENE 6: LOVE METER -->
+  <section class="scene" id="scene-meter">
+    <div class="section-label">Science of love</div>
+    <div class="section-heading">Love Compatibility 💞</div>
+    <div class="meter-wrap">
+      <div class="meter-names-row">
+        <div class="meter-name">Me 💙</div>
+        <div class="meter-plus">+</div>
+        <div class="meter-name">Saika</div>
+      </div>
+      <div class="meter-bar-wrap">
+        <div class="meter-fill" id="meterFill"></div>
+        <div class="meter-pct" id="meterPct">?%</div>
+      </div>
+      <div class="meter-result" id="meterResult"></div>
+      <div class="meter-msg" id="meterMsg">Press the button to calculate your love score!</div>
+      <button class="calc-btn" id="calcBtn" onclick="calcLove()">Calculate 💘</button>
+    </div>
+  </section>
+
+  <!-- SCENE 7: WISH LANTERN -->
+  <section class="scene" id="scene-lantern">
+    <div class="section-label">A wish for you</div>
+    <div class="lantern-area">
+      <span class="lantern-emoji" id="lanternEmoji">🏮</span>
+      <div class="lantern-msg">
+        I close my eyes and I send this lantern into the sky with one wish —<br><br>
+        That <span>Saika</span> always stays happy, always stays loved, and always knows that <span>I</span> am right here, holding her hand through it all. 🌙✨
+      </div>
+      <button class="release-btn" onclick="releaseLantern()">Release into the sky 🌙</button>
+    </div>
+  </section>
+
+  <!-- SCENE 8: REASONS I LOVE YOU -->
+  <section class="scene" id="scene-reasons">
+    <div class="section-label">My reasons</div>
+    <div class="section-heading">Why I love you, Saika</div>
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="carouselTrack">
+        <div class="reason-slide">
+          <div class="reason-num">Reason 01</div>
+          <span class="reason-big-emoji">😂</span>
+          <div class="reason-slide-title">Your sense of humour</div>
+          <div class="reason-slide-text">You make me laugh at the most random things — and I never want it to stop.</div>
+        </div>
+        <div class="reason-slide">
+          <div class="reason-num">Reason 02</div>
+          <span class="reason-big-emoji">🤗</span>
+          <div class="reason-slide-title">Your warmth</div>
+          <div class="reason-slide-text">The way you care for the people around you shows me exactly who you are — and I am so lucky.</div>
+        </div>
+        <div class="reason-slide">
+          <div class="reason-num">Reason 03</div>
+          <span class="reason-big-emoji">💬</span>
+          <div class="reason-slide-title">Our conversations</div>
+          <div class="reason-slide-text">I could talk to you for hours and it would still feel too short. You get me like no one else does.</div>
+        </div>
+        <div class="reason-slide">
+          <div class="reason-num">Reason 04</div>
+          <span class="reason-big-emoji">🌙</span>
+          <div class="reason-slide-title">Late night you</div>
+          <div class="reason-slide-text">When everyone else is asleep and it is just us talking — those are the moments I treasure most.</div>
+        </div>
+        <div class="reason-slide">
+          <div class="reason-num">Reason 05</div>
+          <span class="reason-big-emoji">💪</span>
+          <div class="reason-slide-title">Your strength</div>
+          <div class="reason-slide-text">You face things quietly and bravely. That strength inspires me every single day.</div>
+        </div>
+        <div class="reason-slide">
+          <div class="reason-num">Reason 06</div>
+          <span class="reason-big-emoji">✨</span>
+          <div class="reason-slide-title">Simply being you</div>
+          <div class="reason-slide-text">No reason needed. Just you. My Babu Begum, my Sukku Pukku. Mine forever. 💕</div>
+        </div>
+      </div>
+      <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+  </section>
+
+  <!-- SCENE 9: FINAL -->
+  <section class="scene" id="scene-final">
+    <div class="final-wrap">
+      <span class="final-big">❤️</span>
+      <p class="final-quote">"You are not just my love story —<br>you are my favourite chapter<br>that I never want to end."</p>
+      <p class="final-sign">— written by me, for you, always 💕</p>
+      <button class="fireworks-btn" onclick="fireworks()">🎊 Celebrate Us! 🎊</button>
+    </div>
+  </section>
+
+</div><!-- end app -->
+
+<script>
+// =========================================================
+// INIT
+// =========================================================
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loading').style.opacity = '0';
+    setTimeout(() => {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('app').classList.add('show');
+      initParticles();
+      initNavDots();
+      initScratch();
+      initQuiz();
+      initCarousel();
+      watchScroll();
+    }, 800);
+  }, 1800);
+});
+
+// =========================================================
+// PARTICLES
+// =========================================================
+function initParticles() {
+  const c = document.getElementById('particles');
+  const ctx = c.getContext('2d');
+  c.width = window.innerWidth; c.height = window.innerHeight;
+  const emojis = ['❤️','💕','✨','🌸','💫','⭐'];
+  const ps = Array.from({length:22},() => ({
+    x:Math.random()*c.width, y:Math.random()*c.height,
+    e:emojis[Math.floor(Math.random()*emojis.length)],
+    s:Math.random()*14+8, vy:-(Math.random()*0.4+0.2),
+    vx:(Math.random()-0.5)*0.3, a:Math.random()*0.5+0.2
+  }));
+  (function loop(){
+    ctx.clearRect(0,0,c.width,c.height);
+    ps.forEach(p=>{
+      ctx.globalAlpha=p.a*0.6;
+      ctx.font=p.s+'px serif';
+      ctx.fillText(p.e,p.x,p.y);
+      p.y+=p.vy; p.x+=p.vx;
+      if(p.y<-20) p.y=c.height+20;
+    });
+    ctx.globalAlpha=1;
+    requestAnimationFrame(loop);
+  })();
+}
+
+// =========================================================
+// NAV DOTS
+// =========================================================
+const scenes = ['scene-hero','scene-letter','scene-spin','scene-quiz',
+  'scene-scratch','scene-meter','scene-lantern','scene-reasons','scene-final'];
+function initNavDots(){
+  const nd = document.getElementById('navDots');
+  scenes.forEach((id,i)=>{
+    const d = document.createElement('div');
+    d.className = 'ndot' + (i===0?' active':'');
+    d.onclick = () => document.getElementById(id).scrollIntoView({behavior:'smooth'});
+    nd.appendChild(d);
+  });
+}
+function watchScroll(){
+  const app = document.getElementById('app');
+  const dots = document.querySelectorAll('.ndot');
+  app.addEventListener('scroll',()=>{
+    const sy = app.scrollTop;
+    const vh = window.innerHeight;
+    const idx = Math.round(sy/vh);
+    dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+  });
+}
+
+// =========================================================
+// SPIN THE DARE
+// =========================================================
+const dares = [
+  {e:'💌', t:'Send me a voice note saying "I love you" right now! 🥺'},
+  {e:'📸', t:'Take a selfie with your biggest smile and send it to me right now! 😍'},
+  {e:'🤗', t:'Call me within the next 10 minutes — I am waiting! 📞'},
+  {e:'🌹', t:'Tell me one thing you love most about me! 💕'},
+  {e:'💬', t:'Text me the cheesiest love quote you know! 😂'},
+  {e:'😘', t:'Send me 20 heart emojis right now — I deserve them! 😏'},
+  {e:'🎵', t:'Send me a song that reminds you of us! 🎶'},
+  {e:'🌙', t:'Promise me a late-night call tonight! 🥺'},
+];
+let spinning = false;
+function spinBottle(){
+  if(spinning) return;
+  spinning = true;
+  document.getElementById('dareBox').classList.remove('show');
+  document.getElementById('spinBtn').disabled = true;
+  const svg = document.getElementById('bottleSvg');
+  const total = Math.random()*1080 + 720;
+  let current = 0, speed = 18;
+  const hearts = ['💘','💝','💖','💗','💓','💞','💕','❤️'];
+  let hIdx = 0;
+  const anim = setInterval(()=>{
+    current += speed;
+    speed *= 0.993;
+    hIdx = Math.floor(current/45) % hearts.length;
+    svg.textContent = hearts[hIdx];
+    if(current >= total){
+      clearInterval(anim);
+      spinning = false;
+      document.getElementById('spinBtn').disabled = false;
+      svg.textContent = '💘';
+      const dare = dares[Math.floor(Math.random()*dares.length)];
+      document.getElementById('dareEmoji').textContent = dare.e;
+      document.getElementById('dareText').textContent = dare.t;
+      document.getElementById('dareBox').classList.add('show');
+    }
+  },16);
+}
+
+// =========================================================
+// QUIZ
+// =========================================================
+const questions = [
+  {q:"What is my nickname for you? 🥰", opts:["Janu","Babu Begum","Sweetie","Darling"], ans:1},
+  {q:"What do I always want to hear from you?", opts:["Good morning","I love you","Tell me a joke","Call me"], ans:1},
+  {q:"What is my love language?", opts:["Gifts","Acts of service","Words of affirmation","Quality time"], ans:3},
+  {q:"What do I think about your smile? 😊", opts:["It's okay","It's the best thing in the world","It's cute","Haven't noticed"], ans:1},
+  {q:"How do I feel when you text back instantly? 📱", opts:["Normal","Like the happiest person alive","Surprised","Indifferent"], ans:1},
+];
+let qIdx = 0, qScore = 0, qDone = false;
+function initQuiz(){
+  renderQ();
+}
+function renderQ(){
+  if(qIdx >= questions.length){
+    const msgs = ['Hmm, spend more time with me! 😄','Pretty good! 💕','Amazing! We are perfect! 🌟','You know me so well! 💖','100%? We are SOULMATES! ✨'];
+    const pct = Math.floor(qScore/questions.length*100);
+    document.getElementById('quizCard').innerHTML = `
+      <div class="quiz-score-final">
+        <span class="quiz-score-num">${pct}%</span>
+        <div class="quiz-score-msg">${pct>=80?'You know me so well! 💖':pct>=60?'Pretty good, Babu Begum! 💕':'We need more time together! 😊'}</div>
+        <button class="spin-btn" style="margin:20px auto 0;display:block" onclick="restartQuiz()">Play Again 🔄</button>
+      </div>`;
+    return;
+  }
+  const q = questions[qIdx];
+  document.getElementById('quizProg').textContent = `Question ${qIdx+1} of ${questions.length}`;
+  document.getElementById('quizQ').textContent = q.q;
+  document.getElementById('quizRes').textContent = '';
+  const optsEl = document.getElementById('quizOpts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((o,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = o;
+    btn.onclick = () => answerQ(i, btn);
+    optsEl.appendChild(btn);
+  });
+}
+function answerQ(i, btn){
+  const q = questions[qIdx];
+  document.querySelectorAll('.quiz-opt').forEach(b=>b.onclick=null);
+  if(i===q.ans){
+    btn.classList.add('correct');
+    document.getElementById('quizRes').textContent = ['Correct! 🎉','Yes!! 💖','You know it! ✨','Perfect! 🌟','Right! 💕'][Math.floor(Math.random()*5)];
+    qScore++;
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.quiz-opt')[q.ans].classList.add('correct');
+    document.getElementById('quizRes').textContent = 'Not quite — but now you know! 💕';
+  }
+  setTimeout(()=>{ qIdx++; renderQ(); },1400);
+}
+function restartQuiz(){ qIdx=0; qScore=0; initQuiz(); }
+
+// =========================================================
+// SCRATCH CARD
+// =========================================================
+function initScratch(){
+  const wrap = document.getElementById('scratchWrap');
+  const canvas = document.getElementById('scratchCanvas');
+  canvas.width = wrap.offsetWidth || 320;
+  canvas.height = 180;
+  const ctx = canvas.getContext('2d');
+  // fill with silver gradient
+  const grad = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+  grad.addColorStop(0,'#b8b8b8'); grad.addColorStop(0.5,'#e0e0e0'); grad.addColorStop(1,'#a0a0a0');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  // text on scratch layer
+  ctx.fillStyle='rgba(80,80,80,0.6)';
+  ctx.font='bold 16px Dancing Script, cursive';
+  ctx.textAlign='center';
+  ctx.fillText('✦ Scratch here ✦',canvas.width/2,canvas.height/2);
+
+  let drawing = false;
+  let revealed = 0;
+  const total = canvas.width * canvas.height;
+
+  function scratch(x,y){
+    ctx.globalCompositeOperation='destination-out';
+    ctx.beginPath();
+    ctx.arc(x,y,22,0,Math.PI*2);
+    ctx.fill();
+    // check reveal
+    const d = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    let transparent=0;
+    for(let i=3;i<d.length;i+=4) if(d[i]<128) transparent++;
+    const pct = Math.min(100,Math.floor(transparent/total*100*4));
+    document.getElementById('scratchPct').textContent = pct+'% revealed';
+    if(pct>65){
+      canvas.style.opacity='0';
+      canvas.style.transition='opacity 0.5s';
+      document.getElementById('scratchPct').textContent='✨ Fully revealed! ✨';
+    }
+  }
+
+  canvas.addEventListener('mousedown',e=>{drawing=true; scratch(e.offsetX,e.offsetY);});
+  canvas.addEventListener('mousemove',e=>{if(drawing) scratch(e.offsetX,e.offsetY);});
+  canvas.addEventListener('mouseup',()=>drawing=false);
+  canvas.addEventListener('touchstart',e=>{
+    e.preventDefault(); drawing=true;
+    const r=canvas.getBoundingClientRect();
+    scratch(e.touches[0].clientX-r.left, e.touches[0].clientY-r.top);
+  },{passive:false});
+  canvas.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    const r=canvas.getBoundingClientRect();
+    scratch(e.touches[0].clientX-r.left, e.touches[0].clientY-r.top);
+  },{passive:false});
+  canvas.addEventListener('touchend',()=>drawing=false);
+}
+
+// =========================================================
+// LOVE METER
+// =========================================================
+let meterDone = false;
+function calcLove(){
+  if(meterDone) return;
+  meterDone = true;
+  document.getElementById('calcBtn').style.display='none';
+  document.getElementById('meterMsg').textContent='Calculating...💫';
+  const target = 100;
+  let current = 0;
+  const fill = document.getElementById('meterFill');
+  const pct = document.getElementById('meterPct');
+  const interval = setInterval(()=>{
+    current += 1;
+    fill.style.width = current+'%';
+    pct.textContent = current+'%';
+    if(current>=target){
+      clearInterval(interval);
+      document.getElementById('meterResult').textContent = '♾️ Infinite Compatibility';
+      document.getElementById('meterMsg').innerHTML = 'Me + Saika = <b style="color:var(--gold)">A love that is written in the stars.</b> 🌟 No algorithm needed — this is simply meant to be. 💞';
+    }
+  },25);
+}
+
+// =========================================================
+// LANTERN
+// =========================================================
+function releaseLantern(){
+  for(let i=0;i<12;i++){
+    setTimeout(()=>{
+      const l = document.createElement('div');
+      l.className='flying-lantern';
+      l.textContent='🏮';
+      l.style.cssText=`left:${Math.random()*80+10}%;bottom:10%;--fx:${(Math.random()-0.5)*200}px;--fy:-${Math.random()*300+200}px`;
+      document.body.appendChild(l);
+      setTimeout(()=>l.remove(),4100);
+    },i*120);
+  }
+  // also some stars
+  for(let i=0;i<20;i++){
+    setTimeout(()=>{
+      const s=document.createElement('div');
+      s.className='flying-lantern';
+      s.textContent='⭐';
+      s.style.cssText=`font-size:20px;left:${Math.random()*100}%;bottom:${Math.random()*30}%;--fx:${(Math.random()-0.5)*300}px;--fy:-${Math.random()*400+100}px`;
+      document.body.appendChild(s);
+      setTimeout(()=>s.remove(),4100);
+    },i*80+200);
+  }
+}
+
+// =========================================================
+// CAROUSEL
+// =========================================================
+function initCarousel(){
+  const track = document.getElementById('carouselTrack');
+  const dots = document.getElementById('carouselDots');
+  const slides = track.querySelectorAll('.reason-slide');
+  slides.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='cdot'+(i===0?' active':'');
+    dots.appendChild(d);
+  });
+  track.addEventListener('scroll',()=>{
+    const idx=Math.round(track.scrollLeft/(track.scrollWidth/slides.length));
+    document.querySelectorAll('.cdot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+  });
+}
+
+// =========================================================
+// FIREWORKS
+// =========================================================
+function fireworks(){
+  const colors=['#ff4d6d','#ffd700','#ff85a1','#ffccd5','#c77dff','#ff006e','#ffffff','#00ffcc'];
+  const emojis=['❤️','💕','💖','🌸','✨','💫','🌹','💝'];
+  for(let i=0;i<100;i++){
+    setTimeout(()=>{
+      const c=document.createElement('div');
+      c.className='confetti-p';
+      const isEmoji = Math.random()>0.6;
+      if(isEmoji){
+        c.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+        c.style.cssText=`left:${Math.random()*100}vw;top:-20px;font-size:${Math.random()*20+12}px;--cx:${(Math.random()-0.5)*300}px`;
+      } else {
+        c.style.cssText=`left:${Math.random()*100}vw;top:-10px;width:${Math.random()*12+6}px;height:${Math.random()*12+6}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'2px'};--cx:${(Math.random()-0.5)*300}px`;
+      }
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),3100);
+    },i*28);
+  }
+}
+</script>
+</body>
+</html>
